@@ -1,11 +1,15 @@
 package com.company.utils;
 
 import com.arcsoft.face.*;
-import com.arcsoft.face.enums.*;
+import com.arcsoft.face.enums.CompareModel;
+import com.arcsoft.face.enums.DetectMode;
+import com.arcsoft.face.enums.DetectModel;
+import com.arcsoft.face.enums.DetectOrient;
 import com.arcsoft.face.toolkit.ImageInfo;
 import com.arcsoft.face.toolkit.ImageInfoEx;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.company.enums.ErrorInfo;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +30,7 @@ public class FaceRecognitionUtils{
     private static final String SDK_KEY="应用的APP ID";
 
 
-    private final static Logger logger= LoggerFactory.getLogger(FaceRecognitionUtils.class);
+    private final static Logger logger= LogManager.getLogger(FaceRecognitionUtils.class.getName());
 
     //人脸引擎
     private static FaceEngine faceEngine=new FaceEngine();
@@ -76,7 +80,7 @@ public class FaceRecognitionUtils{
         int errorCode=faceEngine.activeOnline(APP_ID,SDK_KEY);
         if(errorCode!= ErrorInfo.MOK.getValue() && errorCode!=ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()){
             // SDK激活失败
-            logger.info("在线激活SDK失败！错误码："+errorCode);
+            logger.error("在线激活SDK失败！错误码："+errorCode);
         }else{
             // SDK激活成功
             logger.info("在线激活SDK成功！");
@@ -92,7 +96,7 @@ public class FaceRecognitionUtils{
      * @param faceMaxNum 人脸检测最大数量（推荐10）
      * @param faceScaleVal 最小人脸比例（VIDEO模式推荐16；IMAGE模式推荐32）
      */
-    public static void InitializeTheEngine(DetectMode detectMode,DetectOrient detectOrient,int faceMaxNum,int faceScaleVal){
+    public static void InitializeTheEngine(DetectMode detectMode, DetectOrient detectOrient, int faceMaxNum, int faceScaleVal){
         // 创建引擎配置类
         EngineConfiguration engineConfiguration=new EngineConfiguration();
         // 设置detectMode参数
@@ -110,7 +114,7 @@ public class FaceRecognitionUtils{
         int errorCode=faceEngine.init(engineConfiguration);
         if(errorCode != ErrorInfo.MOK.getValue()){
             // 引擎初始化失败
-            logger.info("引擎初始化失败！错误码："+errorCode);
+            logger.error("引擎初始化失败！错误码："+errorCode);
         }else{
             // 引擎初始化成功
             logger.info("引擎初始化成功！");
@@ -130,7 +134,7 @@ public class FaceRecognitionUtils{
                 faceInfoList);
         if(errorCode != ErrorInfo.MOK.getValue()){
             // 人脸检测失败
-            logger.info("人脸检测失败！错误码："+errorCode);
+            logger.error("人脸检测失败！错误码："+errorCode);
             return false;
         }else{
             // 人脸检测成功
@@ -157,7 +161,7 @@ public class FaceRecognitionUtils{
                 DetectModel.ASF_DETECT_MODEL_RGB, faceInfoList);
         if(errorCode != ErrorInfo.MOK.getValue()){
             // 人脸检测失败
-            logger.info("人脸检测失败！错误码："+errorCode);
+            logger.error("人脸检测失败！错误码："+errorCode);
             return false;
         }else{
             // 人脸检测成功
@@ -180,7 +184,7 @@ public class FaceRecognitionUtils{
                 faceInfo, faceFeature);
         if(errorCode != ErrorInfo.MOK.getValue()){
             // 人脸特征提取失败
-            logger.info("人脸特征提取失败！错误码："+errorCode);
+            logger.error("人脸特征提取失败！错误码："+errorCode);
             return null;
         }else{
             // 人脸特征提取成功
@@ -209,7 +213,7 @@ public class FaceRecognitionUtils{
         int errorCode =  faceEngine.extractFaceFeature(imageInfoEx, faceInfo, faceFeature);
         if(errorCode != ErrorInfo.MOK.getValue()){
             // 人脸特征提取失败
-            logger.info("人脸特征提取失败！错误码："+errorCode);
+            logger.error("人脸特征提取失败！错误码："+errorCode);
             return null;
         }else{
             // 人脸特征提取成功
@@ -226,13 +230,13 @@ public class FaceRecognitionUtils{
      * @param compareModel 比对模型
      * @return 比对相似度
      */
-    public static Float faceFeatureComparison(FaceFeature targetFaceFeature, FaceFeature sourceFaceFeature,CompareModel compareModel){
+    public static Float faceFeatureComparison(FaceFeature targetFaceFeature, FaceFeature sourceFaceFeature, CompareModel compareModel){
         // 创建比对相似度对象
         FaceSimilar faceSimilar=new FaceSimilar();
         int errorCode=faceEngine.compareFaceFeature(targetFaceFeature,sourceFaceFeature, compareModel,faceSimilar);
         if(errorCode != ErrorInfo.MOK.getValue()){
             // 人脸特征比对失败
-            logger.info("人脸特征比对失败！错误码："+errorCode);
+            logger.error("人脸特征比对失败！错误码："+errorCode);
             return null;
         }else{
             // 人脸特征比对成功
@@ -255,7 +259,7 @@ public class FaceRecognitionUtils{
                 faceSimilar);
         if(errorCode != ErrorInfo.MOK.getValue()){
             // 人脸特征比对失败
-            logger.info("人脸特征比对失败！错误码："+errorCode);
+            logger.error("人脸特征比对失败！错误码："+errorCode);
             return null;
         }else{
             // 人脸特征比对成功
@@ -276,7 +280,7 @@ public class FaceRecognitionUtils{
                 imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList, functionConfiguration2);
         if(errorCode != ErrorInfo.MOK.getValue()){
             // 人脸属性检测失败
-            logger.info("人脸属性检测失败！错误码："+errorCode);
+            logger.error("人脸属性检测失败！错误码："+errorCode);
             return false;
         }else{
             // 人脸属性检测成功
@@ -303,7 +307,7 @@ public class FaceRecognitionUtils{
                 functionConfiguration2);
         if(errorCode != ErrorInfo.MOK.getValue()){
             // 人脸属性检测失败
-            logger.info("人脸属性检测失败！错误码："+errorCode);
+            logger.error("人脸属性检测失败！错误码："+errorCode);
             return false;
         }else{
             // 人脸属性检测成功
@@ -322,7 +326,7 @@ public class FaceRecognitionUtils{
         int errorCode = faceEngine.getAge(ageInfoList);
         if(errorCode!=ErrorInfo.MOK.getValue()){
             // 获取年龄信息失败
-            logger.info("获取年龄信息失败！错误码："+errorCode);
+            logger.error("获取年龄信息失败！错误码："+errorCode);
             return false;
         }else{
             // 已成功获取年龄信息
@@ -342,7 +346,7 @@ public class FaceRecognitionUtils{
         int errorCode = faceEngine.getGender(genderInfoList);
         if(errorCode!=ErrorInfo.MOK.getValue()){
             // 获取性别失败
-            logger.info("获取性别失败！错误码："+errorCode);
+            logger.error("获取性别失败！错误码："+errorCode);
             return false;
         }else{
             // 已成功获取年龄信息
@@ -363,7 +367,7 @@ public class FaceRecognitionUtils{
         int errorCode = faceEngine.getFace3DAngle(face3DAngleList);
         if(errorCode!=ErrorInfo.MOK.getValue()){
             // 获取人脸三维角度信息失败
-            logger.info("获取人脸三维角度信息失败！错误码："+errorCode);
+            logger.error("获取人脸三维角度信息失败！错误码："+errorCode);
             return false;
         }else{
             // 已成功获取人脸三维角度信息
@@ -384,7 +388,7 @@ public class FaceRecognitionUtils{
         int errorCode = faceEngine.getLiveness(livenessInfoList);
         if(errorCode!=ErrorInfo.MOK.getValue()){
             // 获取RGB活体信息失败
-            logger.info("获取RGB活体信息失败！错误码："+errorCode);
+            logger.error("获取RGB活体信息失败！错误码："+errorCode);
             return false;
         }else{
             // 已成功获取RGB活体信息
@@ -420,7 +424,7 @@ public class FaceRecognitionUtils{
         if(errorCode1!=ErrorInfo.MOK.getValue() || errorCode2!=ErrorInfo.MOK.getValue()){
             String errorCode=errorCode1==0?errorCode2+"":errorCode1+"";
             // IR活体检测失败
-            logger.info("IR活体检测失败！错误码："+errorCode);
+            logger.error("IR活体检测失败！错误码："+errorCode);
             return false;
         }else{
             // IR活体检测成功
@@ -454,7 +458,7 @@ public class FaceRecognitionUtils{
         if(errorCode1!=ErrorInfo.MOK.getValue() || errorCode2!=ErrorInfo.MOK.getValue()){
             String errorCode=errorCode1==0?errorCode2+"":errorCode1+"";
             // IR活体检测失败
-            logger.info("IR活体检测失败！错误码："+errorCode);
+            logger.error("IR活体检测失败！错误码："+errorCode);
             return false;
         }else{
             // IR活体检测成功
@@ -474,7 +478,7 @@ public class FaceRecognitionUtils{
         int errorCode = faceEngine.getLivenessIr(irLivenessInfo);
         if(errorCode!=ErrorInfo.MOK.getValue()){
             // 获取IR活体信息失败
-            logger.info("获取IR活体信息失败！错误码："+errorCode);
+            logger.error("获取IR活体信息失败！错误码："+errorCode);
             return false;
         }else{
             // 已成功获取IR活体信息
@@ -491,7 +495,7 @@ public class FaceRecognitionUtils{
         int errorCode = faceEngine.unInit();
         if(errorCode!=ErrorInfo.MOK.getValue()){
             // 销毁SDK引擎失败
-            logger.info("销毁SDK引擎失败！错误码："+errorCode);
+            logger.error("销毁SDK引擎失败！错误码："+errorCode);
         }else{
             // 销毁SDK引擎成功
             logger.info("销毁SDK引擎成功！");

@@ -4,7 +4,6 @@ import com.arcsoft.face.enums.DetectMode;
 import com.arcsoft.face.enums.DetectOrient;
 import com.arcsoft.face.toolkit.ImageInfo;
 import com.company.utils.*;
-
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -27,6 +26,8 @@ public class Main {
         File file2=new File("F:\\电脑壁纸\\宋祖儿\\5c862c467a803.jpg");
         // 图像2信息
         ImageInfo imageInfo2=getRGBData(file2);
+
+
 
         System.out.println("--*--------------------------------【 图像1 】--------------------------------*--"+System.lineSeparator());
 
